@@ -14,8 +14,8 @@ export const addCartItem = async (req, res, next) => {
       return sendErrorResponse(
         res,
         404,
-        "Not Found",
-        `No product found with ID: ${productId}`
+        "Product Not Found",
+        `No product found with ID: ${productId} to add to cart`
       );
     }
     //
@@ -24,7 +24,7 @@ export const addCartItem = async (req, res, next) => {
         res,
         400,
         "Stock Limit Exceeded",
-        `Only ${product.stock} items in stock.`
+        `Cannot add to cart, only ${product.stock} items in stock. `
       );
     }
     // Check if the user already has a cart
@@ -115,7 +115,7 @@ export const updateCartItem = async (req, res, next) => {
         res,
         400,
         "Stock Limit Exceeded",
-        `Only ${product.stock} items in stock.`
+        `Current quantity in cart: ${quantity}, stock available: ${product.stock}.`
       );
     }
 
@@ -144,12 +144,8 @@ export const updateCartItem = async (req, res, next) => {
       );
     }
     // If the product is found, update its quantity
-    if (quantity === 0) {
-      cart.products.splice(index, 1);
-    } else {
-      cart.products[index].quantity = quantity;
-    }
 
+    cart.products[index].quantity = quantity;
     await cart.save();
     const populatedCart = await cart.populate("products.productId");
     return sendSuccessResponse(

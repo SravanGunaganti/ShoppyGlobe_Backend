@@ -36,7 +36,7 @@ export const validateProduct = (req, res, next) => {
       "Description is required and must be at least 20 characters."
     );
   }
-   // Validate price and stock
+  // Validate price and stock
   if (!isNumber(price)) {
     return sendErrorResponse(
       res,

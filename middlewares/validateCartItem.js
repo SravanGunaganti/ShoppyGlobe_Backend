@@ -15,24 +15,48 @@ export function validateCartItem(req, res, next) {
     );
   }
 
-  const { productId, quantity=1 } = req.body;
-  // Check if productId and quantity are provided and valid
-  if (!productId || !mongoose.Types.ObjectId.isValid(productId)) {
+  const { productId, quantity } = req.body;
+
+  // Check if productId is provided
+  if (!productId) {
+    return sendErrorResponse(
+      res,
+      400,
+      "Missing Product ID",
+      "Product ID must be provided in the request body."
+    );
+  }
+  // Validate productId format
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
     return sendErrorResponse(
       res,
       400,
       "Invalid Product ID",
-      "A valid productId must be provided."
+      `The provided product ID '${productId}' is not a valid MongoDB ObjectId.`
     );
   }
+  const isUpdatingCart = req.method === "PUT";
+  if (isUpdatingCart) {
+    // If updating the cart, check if quantity is provided
+    if (quantity === undefined || quantity === null) {
+      return sendErrorResponse(
+        res,
+        400,
+        "Missing Quantity",
+        "Quantity must be provided for updating items in the cart."
+      );
+    }
 
-  if (!isPositiveInteger(quantity)) {
-    return sendErrorResponse(
-      res,
-      400,
-      "Invalid Quantity",
-      "Quantity must be a positive integer (minimum 1)."
-    );
+    // Validate quantity if it's provided
+    if (!isPositiveInteger(quantity)) {
+      return sendErrorResponse(
+        res,
+        400,
+        "Invalid Quantity",
+        "Quantity must be a positive integer (minimum 1)."
+      );
+    }
   }
 
   // If all validations pass, proceed to the next middleware or route handler

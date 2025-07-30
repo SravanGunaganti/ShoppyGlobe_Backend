@@ -86,7 +86,7 @@ export const updateProduct = async (req, res, next) => {
         res,
         404,
         "Product Not Found",
-        `No product found with ID: ${req.params.id}`
+        `No product found with ID: ${req.params.id} to update`
       );
     }
     return sendSuccessResponse(
@@ -107,11 +107,13 @@ export const deleteProduct = async (req, res, next) => {
     const deletedProduct = await ProductModel.findByIdAndDelete(req.params.id);
 
     if (!deletedProduct) {
+      // If no product is found, return an error response
+
       return sendErrorResponse(
         res,
         404,
-        "Not Found",
-        `No product found with ID: ${req.params.id}`
+        "Product Not Found",
+        `No product found with ID: ${req.params.id} to delete`
       );
     }
     return sendSuccessResponse(

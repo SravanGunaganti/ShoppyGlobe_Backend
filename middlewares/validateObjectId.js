@@ -15,7 +15,6 @@ export const validateObjectId = (req, res, next) => {
     );
   }
 
-
   const paramValue = productId || id;
   const paramName = productId ? "productId" : "Id";
 

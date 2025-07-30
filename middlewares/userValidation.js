@@ -48,7 +48,7 @@ export const validateRegisterUser = (req, res, next) => {
     return sendErrorResponse(
       res,
       400,
-      "Invalid Email Format",
+      "Invalid Email",
       "Please enter a valid email address. Please ensure it follows the standard format like: example@domain.com"
     );
   }
