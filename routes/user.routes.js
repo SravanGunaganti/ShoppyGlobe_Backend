@@ -5,7 +5,7 @@ import { loginUser, registerUser } from "../controllers/user.controller.js";
 import {
   validateLoginUser,
   validateRegisterUser,
-} from "../middlewares/userValidation.js";
+} from "../middlewares/validateUser.js";
 
 // Function to define user-related routes
 export function userRoutes(app) {

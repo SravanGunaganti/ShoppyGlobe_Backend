@@ -37,11 +37,11 @@ export function productRoutes(app) {
   app.get("/api/products", getAllProducts);
 
   // GET route to retrieve a specific product by ID, requires validation of the product ID
-  app.get("/api/products/:id", validateObjectId, getProductById);
+  app.get("/api/products/:id", validateObjectId("params","id"), getProductById);
 
   // PUT and DELETE routes to update or delete a specific product by ID, requires token verification and validation of the product ID
-  app.put("/api/products/:id", verifyToken, validateObjectId, updateProduct);
+  app.put("/api/products/:id", verifyToken, validateObjectId("params","id"), updateProduct);
 
   // DELETE route to remove a specific product by ID, requires token verification and validation of the product ID
-  app.delete("/api/products/:id", verifyToken, validateObjectId, deleteProduct);
+  app.delete("/api/products/:id", verifyToken, validateObjectId("params","id"), deleteProduct);
 }

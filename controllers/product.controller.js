@@ -37,11 +37,25 @@ export const createProduct = async (req, res, next) => {
 // Controller function to retrieve all products with optional limit
 export const getAllProducts = async (req, res, next) => {
   try {
+    // Get the limit from query parameters or default to 30
     const limit = parseInt(req.query?.limit) || 30;
+
+    // Fetch products from the database with the specified limit and exclude the __v field and return as plain objects
     const products = await ProductModel.find()
       .limit(limit)
       .select("-__v")
       .lean();
+
+    if (products.length === 0) {
+      return sendErrorResponse(
+        res,
+        404,
+        "No Products Found",
+        "No products available in the database."
+      );
+    }
+
+    // Return the list of products
     return sendSuccessResponse(res, 200, products);
   } catch (error) {
     next(error);
@@ -72,7 +86,7 @@ export const getProductById = async (req, res, next) => {
 // Controller function to update a product by its ID
 export const updateProduct = async (req, res, next) => {
   try {
-    //
+    // Find the product by ID and update it with the request body
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -81,6 +95,7 @@ export const updateProduct = async (req, res, next) => {
         runValidators: true,
       }
     );
+    // If no product is updated, return an error response
     if (!updatedProduct) {
       return sendErrorResponse(
         res,
@@ -108,7 +123,6 @@ export const deleteProduct = async (req, res, next) => {
 
     if (!deletedProduct) {
       // If no product is found, return an error response
-
       return sendErrorResponse(
         res,
         404,
@@ -116,6 +130,7 @@ export const deleteProduct = async (req, res, next) => {
         `No product found with ID: ${req.params.id} to delete`
       );
     }
+    // return a success response
     return sendSuccessResponse(
       res,
       200,
