@@ -1,5 +1,8 @@
 // Importing express to create the server and handle routes
 import express from "express";
+// Importing CORS to handle cross-origin requests
+import cors from "cors";
+
 // Importing mongoose to interact with MongoDB
 import mongoose from "mongoose";
 
@@ -25,6 +28,9 @@ import {
 
 // Initialize the Express application to handle HTTP requests
 const app = express();
+
+// Using CORS middleware to allow cross-origin requests
+app.use(cors());
 
 // Setting up dotenv to use environment variables
 dotenv.config();
