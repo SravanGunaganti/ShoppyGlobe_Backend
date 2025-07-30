@@ -87,7 +87,6 @@ project/
 │   ├── errorHandlers.js
 │   ├── userValidation.js
 │   ├── validateBulkProducts.js
-│   ├── validateCartItem.js
 │   ├── validateObjectId.js
 │   ├── validateProduct.js
 │   └── verifyToken.js
@@ -130,7 +129,6 @@ project/
 - **errorHandlers.js**: Centralized error handling.
 - **userValidation.js**: Validates user registration/login data.
 - **validateBulkProducts.js**: Checks incoming bulk product data.
-- **validateCartItem.js**: Validates cart item details.
 - **validateObjectId.js**: Validates MongoDB ObjectId in route parameters.
 - **validateProduct.js**: Validates individual product data.
 - **verifyToken.js**: JWT token verification middleware.
@@ -196,10 +194,11 @@ JWT_SECRET=your_jwt_secret
 
 ### Cart Routes 
 
-- **POST /api/cart** - Add to cart or increment quantity.
+- **POST /api/cart** - Add to cart or increment quantity for existing.
 - **GET /api/cart** - Fetch user’s cart.
-- **PUT /api/cart** - Update cart item quantity.
-- **DELETE /api/cart/\*\*\*\*****:productId** - Remove product from cart.
+- **PUT /api/cart/increment/:productId** - Increase cart item quantity.
+- **PUT /api/cart/increment/:productId** - decrease cart item quantity.
+- **DELETE /api/cart/:productId** - Remove product from cart.
 - **DELETE /api/cart** - Clear entire cart.
 
 ---
@@ -220,7 +219,7 @@ JWT_SECRET=your_jwt_secret
 
 ### Cart Management
 
-- Add/update/delete cart items.
+- Add/increment/decrement/delete cart items.
 - Clear cart.
 
 ### Middleware Validation
@@ -244,7 +243,8 @@ All endpoints tested using Thunder Client:
 
 ### Negative Tests
 
-- Missing or invalid fields.
+- Missing or invalid fields
+- stock limit reached /minimum quantity reached
 - Invalid JWT token.
 - Non-existent endpoints or ObjectIds.
 
